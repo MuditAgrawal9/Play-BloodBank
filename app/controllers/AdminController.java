@@ -1,15 +1,24 @@
 package controllers;
 
+import io.ebean.DB;
+import io.ebean.Transaction;
 import models.BloodInventory;
 import models.BloodTransaction;
 import models.Donor;
 import models.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import play.mvc.*;
 
 import java.util.List;
 import java.util.Map;
 
 public class AdminController extends Controller {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(
+                    AdminController.class
+            );
 
     public Result dashboard(Http.Request request) {
 
@@ -106,15 +115,32 @@ public class AdminController extends Controller {
             );
         }
 
-        inventory.setUnitsAvailable(
-                inventory.getUnitsAvailable()
-                        - tx.getUnits()
-        );
+        try(Transaction txn = DB.beginTransaction()){
+            inventory.setUnitsAvailable(
+                    inventory.getUnitsAvailable()
+                            - tx.getUnits()
+            );
 
-        inventory.update();
+            inventory.update();
 
-        tx.setStatus("APPROVED");
-        tx.update();
+            tx.setStatus("APPROVED");
+            tx.update();
+
+            txn.commit();
+
+            logger.info(
+                    "Transaction {} approved. BloodGroup={} Units={}",
+                    tx.getId(),tx.getBloodGroup(),tx.getUnits()
+            );
+        }
+        catch (Exception e){
+            logger.error(
+                    "Failed to approve transaction {}",
+                    tx.getId(),
+                    e
+            );
+            return badRequest("Unable to approve request");
+        }
 
         return redirect(
                 "/admin/transactions"
@@ -134,8 +160,23 @@ public class AdminController extends Controller {
             return badRequest("Request already processed");
         }
 
-        tx.setStatus("REJECTED");
-        tx.update();
+        try(Transaction txn = DB.beginTransaction()){
+            tx.setStatus("REJECTED");
+            tx.update();
+
+            txn.commit();
+            logger.info(
+                    "Transaction {} rejected by admin",
+                    tx.getId()
+            );
+        } catch (Exception e) {
+            logger.error(
+                    "Failed to reject transaction {}",
+                    tx.getId(),
+                    e
+            );
+            return badRequest("Unable to reject request");
+        }
 
         return redirect("/admin/transactions");
     }
@@ -176,6 +217,12 @@ public class AdminController extends Controller {
                         data.get("units")[0]
                 );
 
+        if(units <= 0) {
+            return badRequest(
+                    "Units must be greater than zero"
+            );
+        }
+
         Donor donor =
                 Donor.find.byId(donorId);
 
@@ -186,30 +233,6 @@ public class AdminController extends Controller {
         BloodTransaction tx =
                 new BloodTransaction();
 
-        tx.setUser(
-                donor.getUser()
-        );
-
-        tx.setBloodGroup(
-                donor.getBloodGroup()
-        );
-
-        tx.setUnits(units);
-
-        tx.setTransactionType(
-                "INCOMING"
-        );
-
-        tx.setStatus(
-                "COMPLETED"
-        );
-
-        tx.setTransactionDate(
-                java.time.LocalDateTime.now()
-        );
-
-        tx.save();
-
         BloodInventory inventory =
                 BloodInventory.find.query()
                         .where()
@@ -219,14 +242,45 @@ public class AdminController extends Controller {
                         )
                         .findOne();
 
-        if(inventory != null) {
+        try(Transaction txn = DB.beginTransaction()){
+            tx.setUser(donor.getUser());
+            tx.setBloodGroup(donor.getBloodGroup());
+            tx.setUnits(units);
+            tx.setTransactionType("INCOMING");
+            tx.setStatus("COMPLETED");
+            tx.setTransactionDate(java.time.LocalDateTime.now());
+            tx.save();
 
-            inventory.setUnitsAvailable(
-                    inventory.getUnitsAvailable()
-                            + units
+            if(inventory != null) {
+
+                inventory.setUnitsAvailable(
+                        inventory.getUnitsAvailable()
+                                + units
+                );
+
+                inventory.update();
+            }
+
+            txn.commit();
+
+            logger.info(
+                    "Donation recorded. Donor={} BloodGroup={} Units={}",
+                    donor.getId(),
+                    donor.getBloodGroup(),
+                    units
+            );
+        }
+        catch(Exception e) {
+
+            logger.error(
+                    "Failed to record donation for donor {}",
+                    donor.getId(),
+                    e
             );
 
-            inventory.update();
+            return internalServerError(
+                    "Unable to record donation"
+            );
         }
 
         return redirect(
