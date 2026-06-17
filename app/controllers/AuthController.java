@@ -107,6 +107,17 @@ public class AuthController extends Controller {
                 );
     }
 
+    public Result logout(Http.Request request) {
+
+        return redirect("/login")
+                .removingFromSession(
+                        request,
+                        "userId",
+                        "email",
+                        "role"
+                );
+    }
+
     public Result dashboard(Http.Request request) {
 
         String email =

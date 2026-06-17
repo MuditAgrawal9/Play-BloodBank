@@ -19,6 +19,8 @@ POST    /signup                     controllers.AuthController.signup(request : 
 GET     /login                      controllers.AuthController.loginPage()
 POST    /login                      controllers.AuthController.login(request: Request)
 
+GET     /logout                     controllers.AuthController.logout(request: Request)
+
 GET     /profile                    controllers.DonorController.profile(request: Request)
 POST    /profile                    controllers.DonorController.saveProfile(request: Request)
 

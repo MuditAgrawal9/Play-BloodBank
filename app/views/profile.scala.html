@@ -1,15 +1,15 @@
 @(donor: Donor)
-@main("Donor Profile") {
+@layout("Donor Profile","DONOR") {
 
     <h2>Donor Profile</h2>
 
     <form action="/profile" method="POST">
 
         <div>
-            <p>Name - @donor.getUser.getName</p>
-        </div>
-        <div>
-            <p>Email - @donor.getUser.getEmail</p>
+        @if(donor != null && donor.getUser() != null) {
+            <p>Name - @donor.getUser().getName()</p>
+            <p>Email - @donor.getUser().getEmail()</p>
+        }
         </div>
 
         <div>

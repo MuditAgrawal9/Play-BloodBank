@@ -1,0 +1,37 @@
+@(role: String)
+
+<nav>
+
+    @if(role == "ADMIN") {
+
+        <a href="/admin">Dashboard</a> |
+
+        <a href="/admin/transactions">Transactions</a> |
+
+        <a href="/admin/inventory">Inventory</a> |
+
+        <a href="/admin/donation">Record Donation</a>
+
+    }
+
+    @if(role == "HOSPITAL") {
+
+        <a href="/hospital">Dashboard</a> |
+
+        <a href="/request-blood">Request Blood</a> |
+
+        <a href="/my-transactions">My Requests</a>
+
+    }
+
+    @if(role == "DONOR") {
+
+        <a href="/profile">Profile</a>
+
+    }
+
+    | <a href="/logout">Logout</a>
+
+</nav>
+
+<hr>
