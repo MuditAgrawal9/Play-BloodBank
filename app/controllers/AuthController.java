@@ -15,7 +15,7 @@ public class AuthController extends Controller {
 
     public Result signup(Http.Request request) {
 
-        Map<String,String[]> data =
+        Map<String, String[]> data =
                 request.body().asFormUrlEncoded();
 
         String name =
@@ -27,13 +27,16 @@ public class AuthController extends Controller {
         String password =
                 data.get("password")[0];
 
+        String role =
+                data.get("role")[0];
+
         User existingUser =
                 User.find.query()
                         .where()
                         .eq("email", email)
                         .findOne();
 
-        if(existingUser != null) {
+        if (existingUser != null) {
             return badRequest(
                     "Email already registered"
             );
@@ -44,7 +47,7 @@ public class AuthController extends Controller {
         user.setName(name);
         user.setEmail(email);
         user.setPassword(password);
-        user.setRole("DONOR");
+        user.setRole(role);
 
         user.save();
 
@@ -60,7 +63,7 @@ public class AuthController extends Controller {
 
     public Result login(Http.Request request) {
 
-        Map<String,String[]> data =
+        Map<String, String[]> data =
                 request.body().asFormUrlEncoded();
 
         String email =
@@ -76,7 +79,7 @@ public class AuthController extends Controller {
                         .eq("password", password)
                         .findOne();
 
-        if(user == null) {
+        if (user == null) {
 
             return unauthorized(
                     "Invalid Credentials"
@@ -84,11 +87,23 @@ public class AuthController extends Controller {
 
         }
 
+//        return redirect("/")
+//                .addingToSession(
+//                        request,
+//                        "email" ,
+//                        user.getEmail()
+//                );
+        System.out.println("Login Controller - userId - " + user.getId());
+//        System.out.println("Login Controller - userId - " + String.valueOf(user.getId()));
+
         return redirect("/")
                 .addingToSession(
                         request,
-                        "email",
-                        user.getEmail()
+                        Map.of(
+                                "userId", String.valueOf(user.getId()),
+                                "email", user.getEmail(),
+                                "role", user.getRole()
+                        )
                 );
     }
 
@@ -99,11 +114,29 @@ public class AuthController extends Controller {
                         .getOptional("email")
                         .orElse(null);
 
-        if(email == null) {
+        if (email == null) {
             return redirect("/login");
         }
 
+        String role =
+                request.session()
+                        .getOptional("role")
+                        .orElse(null);
+
 //        return ok("Welcome " + email );
+//        return redirect("/profile");
+
+
+        if ("HOSPITAL".equals(role)) {
+            return redirect("/hospital");
+        }
+
+        if ("ADMIN".equals(role)) {
+            return redirect("/admin");
+        }
+
+        //DONOR
         return redirect("/profile");
     }
+
 }

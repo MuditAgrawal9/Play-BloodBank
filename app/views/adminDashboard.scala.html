@@ -1,0 +1,52 @@
+@(donorCount: Long,
+        hospitalCount: Long,
+        pendingRequests: Long,
+        transactionCount: Long)
+
+@main("Admin Dashboard") {
+
+    <h2>Admin Dashboard</h2>
+
+    <table border="1">
+
+        <tr>
+            <td>Total Donors</td>
+            <td>@donorCount</td>
+        </tr>
+
+        <tr>
+            <td>Total Hospitals</td>
+            <td>@hospitalCount</td>
+        </tr>
+
+        <tr>
+            <td>Pending Requests</td>
+            <td>@pendingRequests</td>
+        </tr>
+
+        <tr>
+            <td>Total Transactions</td>
+            <td>@transactionCount</td>
+        </tr>
+
+    </table>
+
+    <br>
+
+    <a href="/admin/transactions">
+        View Transactions
+    </a>
+
+    <br><br>
+
+    <a href="/admin/inventory">
+        View Inventory
+    </a>
+
+    <br><br>
+
+    <a href="/admin/donation">
+        Record Donation
+    </a>
+
+}

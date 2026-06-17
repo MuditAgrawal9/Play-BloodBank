@@ -22,11 +22,34 @@ POST    /login                      controllers.AuthController.login(request: Re
 GET     /profile                    controllers.DonorController.profile(request: Request)
 POST    /profile                    controllers.DonorController.saveProfile(request: Request)
 
-GET     /request                    controllers.RequestController.requestPage(request: Request)
-POST    /request                    controllers.RequestController.submitRequest(request: Request)
+#GET     /request                    controllers.RequestController.requestPage(request: Request)
+#POST    /request                    controllers.RequestController.submitRequest(request: Request)
 
-GET     /my-requests                controllers.RequestController.myRequests(request: Request)
+#GET     /my-requests                controllers.RequestController.myRequests(request: Request)
 
+GET     /hospital                   controllers.HospitalController.dashboard(request: Request)
+
+GET     /request-blood              controllers.HospitalController.requestBloodPage(request: Request)
+
+POST    /request-blood              controllers.HospitalController.submitRequest(request: Request)
+
+GET     /my-transactions            controllers.HospitalController.myTransactions(request: Request)
+
+
+#ADMIN
+GET     /admin                      controllers.AdminController.dashboard(request: Request)
+
+GET     /admin/transactions         controllers.AdminController.transactions(request: Request)
+
+GET     /admin/approve/:id          controllers.AdminController.approve(id: Long, request: Request)
+
+GET     /admin/reject/:id           controllers.AdminController.reject(id: Long, request: Request)
+
+GET     /admin/donation             controllers.AdminController.donationPage(request: Request)
+
+POST    /admin/donation             controllers.AdminController.recordDonation(request: Request)
+
+GET     /admin/inventory            controllers.AdminController.inventory(request: Request)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

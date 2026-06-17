@@ -1,0 +1,52 @@
+@(transactions: List[models.BloodTransaction])
+
+@main("Transactions") {
+
+    <h2>All Transactions</h2>
+
+    <table border="1">
+
+        <tr>
+            <th>User</th>
+            <th>Blood Group</th>
+            <th>Units</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+
+        @for(tx <- transactions) {
+
+            <tr>
+
+                <td>@if(tx.getUser() != null){@tx.getUser().getName()} else {N/A}</td>
+
+                <td>@tx.getBloodGroup()</td>
+
+                <td>@tx.getUnits()</td>
+
+                <td>@tx.getTransactionType()</td>
+
+                <td>@tx.getStatus()</td>
+
+                <td>
+
+                @if(tx.getStatus().equals("PENDING")) {
+
+                    <a href="/admin/approve/@tx.getId()">
+                        Approve
+                    </a>
+                    <a href="/admin/reject/@tx.getId()">
+                        Reject
+                    </a>
+                }
+
+                </td>
+
+            </tr>
+
+        }
+
+    </table>
+
+}

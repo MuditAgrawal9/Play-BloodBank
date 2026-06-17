@@ -1,0 +1,34 @@
+@(transactions: List[models.BloodTransaction])
+
+@main("My Transactions") {
+
+    <h2>My Requests</h2>
+
+    <table border="1">
+
+        <tr>
+            <th>Blood Group</th>
+            <th>Units</th>
+            <th>Type</th>
+            <th>Status</th>
+        </tr>
+
+        @for(tx <- transactions) {
+
+            <tr>
+
+                <td>@tx.getBloodGroup()</td>
+
+                <td>@tx.getUnits()</td>
+
+                <td>@tx.getTransactionType()</td>
+
+                <td>@tx.getStatus()</td>
+
+            </tr>
+
+        }
+
+    </table>
+
+}

@@ -1,0 +1,43 @@
+@(donors: List[models.Donor])
+
+@main("Record Donation") {
+
+    <h2>Record Donation</h2>
+
+    <form action="/admin/donation" method="POST">
+
+        <div>
+
+            <label>Donor</label>
+
+            <select name="donorId">
+
+            @for(d <- donors) {
+
+                <option value="@d.getId()">
+                @d.getUser().getName()
+                </option>
+
+            }
+
+            </select>
+
+        </div>
+
+        <div>
+
+            <label>Units</label>
+
+            <input type="number"
+            name="units"
+            required>
+
+        </div>
+
+        <button type="submit">
+            Record Donation
+        </button>
+
+    </form>
+
+}

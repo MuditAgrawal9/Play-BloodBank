@@ -1,0 +1,32 @@
+@(inventory: List[models.BloodInventory])
+
+@main("Inventory") {
+
+    <h2>Blood Inventory</h2>
+
+    <table border="1">
+
+        <tr>
+            <th>Blood Group</th>
+            <th>Units Available</th>
+        </tr>
+
+        @for(item <- inventory) {
+
+            <tr>
+
+                <td>
+                @item.getBloodGroup()
+                </td>
+
+                <td>
+                @item.getUnitsAvailable()
+                </td>
+
+            </tr>
+
+        }
+
+    </table>
+
+}
