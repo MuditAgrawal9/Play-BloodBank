@@ -67,48 +67,36 @@ public class AuthController extends Controller {
     }
 
     public Result login(Http.Request request) {
+        JsonNode body = request.body().asJson();
 
-        Map<String, String[]> data = request.body().asFormUrlEncoded();
+        String email = body.get("email").asText();
+        String password = body.get("password").asText();
 
-        String email = data.get("email")[0];
-
-        String password = data.get("password")[0];
-
-        User user = User.find.query().where().eq("email", email)
-//                        .eq("password", password)
-                .findOne();
+        User user = User.find.query().where().eq("email", email).findOne();
 
         if (user == null) {
-
-            return unauthorized("Invalid Credentials");
-
+            return unauthorized(
+                    Json.newObject()
+                            .put("message", "User Not Found")
+            );
         }
 
         if (!BCrypt.checkpw(password, user.getPassword())) {
-
-            return badRequest("Invalid credentials");
+            return unauthorized(
+                    Json.newObject()
+                            .put("message", "Invalid credentials")
+            );
         }
 
-//        return redirect("/")
-//                .addingToSession(
-//                        request,
-//                        "email" ,
-//                        user.getEmail()
-//                );
         System.out.println("Login Controller - userId - " + user.getId());
-//        System.out.println("Login Controller - userId - " + String.valueOf(user.getId()));
 
-//        return redirect("/")
-//                .addingToSession(
-//                        request,
-//                        Map.of(
-//                                "userId", String.valueOf(user.getId()),
-//                                "email", user.getEmail(),
-//                                "role", user.getRole()
-//                        )
-//                );
-
-        return ok(Json.newObject().put("id", user.getId()).put("name", user.getName()).put("email", user.getEmail()).put("role", user.getRole()));
+        return ok(
+                Json.newObject()
+                        .put("id", user.getId())
+                        .put("name", user.getName())
+                        .put("email", user.getEmail())
+                        .put("role", user.getRole())
+                        .put("message", "Logged In Successfully"));
     }
 
     public Result logout(Http.Request request) {

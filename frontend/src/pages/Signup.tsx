@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import api from "../services/api";
@@ -22,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../components/ui/select";
+import { toast } from "sonner";
 
 export default function Signup() {
   const [name, setName] = useState("");
@@ -32,38 +33,51 @@ export default function Signup() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setError("");
 
     if (!name.trim() || !email.trim() || !password.trim()) {
-      setError("Please Fill All Fields");
+      const message = "Please fill all fields";
+
+      setError(message);
+      toast.error(message);
+
       return;
     }
 
     setLoading(true);
 
     try {
-      await api.post("/signup", {
+      const res = await api.post("/signup", {
         name,
         email,
         password,
         role,
       });
 
-      alert("Signup successful");
+      // alert("Signup successful");
+      toast.success(res?.data?.message);
 
       setName("");
       setEmail("");
       setPassword("");
       setRole("DONOR");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
     } catch (err) {
+      let message = "Unexpected error occurred";
       if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || "Something went wrong");
-      } else {
-        setError("Unexpected error occurred");
+        message = err.response?.data?.message || "Something went wrong";
       }
+
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
