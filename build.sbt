@@ -9,5 +9,6 @@ scalaVersion := "2.13.18"
 
 libraryDependencies ++= Seq(
   guice,
-  "com.mysql" % "mysql-connector-j" % "8.4.0"
+  "com.mysql" % "mysql-connector-j" % "8.4.0",
+  "org.mindrot" % "jbcrypt" % "0.4"
 )
