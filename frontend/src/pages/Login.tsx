@@ -27,7 +27,7 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const response = await api.post("/login", {
         email,
@@ -61,6 +61,8 @@ export default function Login() {
 
       setError(message);
       toast.error(message);
+    } finally {
+      setLoading(false);
     }
   };
 

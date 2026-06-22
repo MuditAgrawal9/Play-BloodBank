@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import api from "../services/api";
-import AdminLayout from "../components/AdminLayout";
 
 import {
   Card,

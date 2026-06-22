@@ -21,8 +21,8 @@ POST    /login                      controllers.AuthController.login(request: Re
 
 GET     /logout                     controllers.AuthController.logout(request: Request)
 
-GET     /profile                    controllers.DonorController.profile(request: Request)
-POST    /profile                    controllers.DonorController.saveProfile(request: Request)
+#GET     /profile                    controllers.DonorController.profile(request: Request)
+#POST    /profile                    controllers.DonorController.saveProfile(request: Request)
 
 #GET     /request                    controllers.RequestController.requestPage(request: Request)
 #POST    /request                    controllers.RequestController.submitRequest(request: Request)
@@ -76,6 +76,13 @@ GET     /api/admin/donors                 controllers.AdminController.getDonors(
 GET     /api/admin/users                 controllers.AdminController.getUsers()
 
 GET     /api/admin/hospitals                 controllers.AdminController.getHospitals()
+
+#donor
+GET     /api/donor/profile/:id            controllers.DonorController.profile(id: Long)
+
+PUT     /api/donor/profile/:id            controllers.DonorController.updateProfile(id: Long, request: Request)
+
+GET     /api/donor/donationHistory/:id        controllers.DonorController.donationHistory(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

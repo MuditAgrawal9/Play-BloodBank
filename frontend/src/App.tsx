@@ -10,6 +10,7 @@ import Transactions from "./pages/Transactions";
 import Users from "./pages/Users";
 import Donors from "./pages/Donors";
 import Hospitals from "./pages/Hospitals";
+import DonorDashboard from "./pages/DonorDashboard";
 
 function App() {
   return (
@@ -81,6 +82,15 @@ function App() {
               <AdminLayout>
                 <Hospitals />
               </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/donor"
+          element={
+            <ProtectedRoute>
+                <DonorDashboard />
             </ProtectedRoute>
           }
         />
