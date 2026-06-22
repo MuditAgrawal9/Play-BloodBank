@@ -2,6 +2,7 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import models.Donor;
 import models.User;
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
@@ -56,6 +57,12 @@ public class AuthController extends Controller {
         user.setRole(role);
 
         user.save();
+
+        if(role.equals("DONOR")){
+            Donor donor = new Donor();
+            donor.setUser(user);
+            donor.save();
+        }
 
 //        return ok("Signup Successful");
 //        return redirect("/login");
