@@ -16,10 +16,6 @@ public class AuthController extends Controller {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
-    public Result signupPage() {
-        return ok(views.html.signup.render());
-    }
-
     public Result signup(Http.Request request) {
         JsonNode body = request.body().asJson();
 
@@ -69,11 +65,8 @@ public class AuthController extends Controller {
         return ok(Json.newObject().put("message", "Signup successful"));
     }
 
-    public Result loginPage() {
-        return ok(views.html.login.render());
-    }
-
     public Result login(Http.Request request) {
+        logger.info("Hello");
         JsonNode body = request.body().asJson();
 
         String email = body.get("email").asText();
@@ -109,32 +102,6 @@ public class AuthController extends Controller {
     public Result logout(Http.Request request) {
 
         return redirect("/login").removingFromSession(request, "userId", "email", "role");
-    }
-
-    public Result dashboard(Http.Request request) {
-
-        String email = request.session().getOptional("email").orElse(null);
-
-        if (email == null) {
-            return redirect("/login");
-        }
-
-        String role = request.session().getOptional("role").orElse(null);
-
-//        return ok("Welcome " + email );
-//        return redirect("/profile");
-
-
-        if ("HOSPITAL".equals(role)) {
-            return redirect("/hospital");
-        }
-
-        if ("ADMIN".equals(role)) {
-            return redirect("/admin");
-        }
-
-        //DONOR
-        return redirect("/profile");
     }
 
 }
