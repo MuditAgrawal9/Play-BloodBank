@@ -11,6 +11,8 @@ import Users from "./pages/Users";
 import Donors from "./pages/Donors";
 import Hospitals from "./pages/Hospitals";
 import DonorDashboard from "./pages/DonorDashboard";
+import PrivateRoute from "./components/PrivateRoute";
+import HospitalDashboard from "./pages/HospitalDashboard";
 
 function App() {
   return (
@@ -23,66 +25,66 @@ function App() {
         <Route
           path="/admin"
           element={
-            <ProtectedRoute>
+            <PrivateRoute>
               <AdminLayout>
                 <AdminDashboard />
               </AdminLayout>
-            </ProtectedRoute>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="/inventory"
           element={
-            <ProtectedRoute>
+            <PrivateRoute>
               <AdminLayout>
                 <Inventory />
               </AdminLayout>
-            </ProtectedRoute>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="/transactions"
           element={
-            <ProtectedRoute>
+            <PrivateRoute>
               <AdminLayout>
                 <Transactions />
               </AdminLayout>
-            </ProtectedRoute>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="/admin/users"
           element={
-            <ProtectedRoute>
+            <PrivateRoute>
               <AdminLayout>
                 <Users />
               </AdminLayout>
-            </ProtectedRoute>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="/admin/donors"
           element={
-            <ProtectedRoute>
+            <PrivateRoute>
               <AdminLayout>
                 <Donors />
               </AdminLayout>
-            </ProtectedRoute>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="/admin/hospitals"
           element={
-            <ProtectedRoute>
+            <PrivateRoute>
               <AdminLayout>
                 <Hospitals />
               </AdminLayout>
-            </ProtectedRoute>
+            </PrivateRoute>
           }
         />
 
@@ -91,6 +93,15 @@ function App() {
           element={
             <ProtectedRoute>
                 <DonorDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/hospital"
+          element={
+            <ProtectedRoute>
+                <HospitalDashboard />
             </ProtectedRoute>
           }
         />

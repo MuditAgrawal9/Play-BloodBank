@@ -449,7 +449,7 @@ public class AdminController extends Controller {
     public Result getTransactions() {
 
         List<BloodTransaction> transactions =
-                BloodTransaction.find.all();
+                BloodTransaction.find.query().orderBy("transaction_date desc").findList();
 
         return ok(
                 Json.toJson(transactions)

@@ -84,5 +84,13 @@ PUT     /api/donor/profile/:id            controllers.DonorController.updateProf
 
 GET     /api/donor/donationHistory/:id        controllers.DonorController.donationHistory(id: Long)
 
+#Hospital
+GET     /api/hospital/profile/:id           controllers.HospitalController.profile(id: Long)
+
+PUT     /api/hospital/profile/:id           controllers.HospitalController.updateProfile(id: Long, request: Request)
+
+POST    /api/hospital/request/:id           controllers.HospitalController.createRequest(id: Long, request: Request)
+
+GET     /api/hospital/requests/:id          controllers.HospitalController.getRequests(id: Long)
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
