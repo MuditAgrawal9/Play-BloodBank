@@ -27,4 +27,13 @@ public class TransactionRepository {
         return BloodTransaction.find.query().where().eq("status", "PENDING").findCount();
     }
 
+    public List<BloodTransaction> findIncomingByUserId(Long userId) {
+
+        return BloodTransaction.find.query().where().eq("user.id", userId).eq("transactionType", "INCOMING").orderBy("transactionDate desc").findList();
+    }
+
+    public List<BloodTransaction> findByUserId(Long userId) {
+
+        return BloodTransaction.find.query().where().eq("user.id", userId).orderBy("transactionDate desc").findList();
+    }
 }

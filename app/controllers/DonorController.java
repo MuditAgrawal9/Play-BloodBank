@@ -7,171 +7,53 @@ import models.Donor;
 import models.User;
 import play.libs.Json;
 import play.mvc.*;
+import services.DonorService;
 
 import java.util.List;
-import java.util.Map;
 
 public class DonorController extends Controller {
 
+    private final DonorService donorService = new DonorService();
+
     public Result profile(Long id) {
 
-        User user = User.find.byId(id);
+        try {
 
-        if (user == null) {
+            return ok(donorService.profile(id));
 
-            return notFound(
-                    Json.newObject()
-                            .put(
-                                    "message",
-                                    "User not found"
-                            )
-            );
+        } catch (Exception e) {
+
+            return badRequest(Json.newObject().put("message", e.getMessage()));
         }
-
-        Donor donor =
-                Donor.find.query()
-                        .where()
-                        .eq(
-                                "user.id",
-                                user.getId()
-                        )
-                        .findOne();
-
-        if (donor == null) {
-
-            return notFound(
-                    Json.newObject()
-                            .put(
-                                    "message",
-                                    "Donor not found"
-                            )
-            );
-        }
-
-        ObjectNode result =
-                Json.newObject();
-
-        result.put(
-                "name",
-                user.getName()
-        );
-
-        result.put(
-                "email",
-                user.getEmail()
-        );
-
-        result.put(
-                "bloodGroup",
-                donor.getBloodGroup()
-        );
-
-        result.put(
-                "age",
-                donor.getAge()
-        );
-
-        result.put(
-                "phone",
-                user.getPhone()
-        );
-
-        result.put(
-                "city",
-                user.getCity()
-        );
-
-        return ok(result);
     }
 
-    public Result updateProfile(
-            Long id,
-            Http.Request request
-    ) {
+    public Result updateProfile(Long id, Http.Request request) {
 
-        JsonNode body =
-                request.body()
-                        .asJson();
+        try {
 
-        String bloodGroup =
-                body.get("bloodGroup")
-                        .asText();
+            JsonNode body = request.body().asJson();
 
-        int age =
-                body.get("age")
-                        .asInt();
+            String bloodGroup = body.get("bloodGroup").asText();
 
-        String phone =
-                body.get("phone")
-                        .asText();
+            int age = body.get("age").asInt();
 
-        String city =
-                body.get("city")
-                        .asText();
+            String phone = body.get("phone").asText();
 
-        User user = User.find.byId(id);
+            String city = body.get("city").asText();
 
-        Donor donor =
-                Donor.find.query()
-                        .where()
-                        .eq(
-                                "user.id",
-                                id
-                        )
-                        .findOne();
+            donorService.updateProfile(id, bloodGroup, age, phone, city);
 
-        if (donor == null) {
+            return ok(Json.newObject().put("message", "Profile updated successfully"));
 
-            return notFound(
-                    Json.newObject()
-                            .put(
-                                    "message",
-                                    "Donor not found"
-                            )
-            );
+        } catch (Exception e) {
+
+            return badRequest(Json.newObject().put("message", e.getMessage()));
         }
-
-        donor.setBloodGroup(
-                bloodGroup
-        );
-
-        donor.setAge(
-                age
-        );
-
-        user.setPhone(
-                phone
-        );
-
-        user.setCity(
-                city
-        );
-
-        donor.update();
-        user.update();
-
-        return ok(
-                Json.newObject()
-                        .put(
-                                "message",
-                                "Profile updated successfully"
-                        )
-        );
     }
 
     public Result donationHistory(Long id) {
 
-        List<BloodTransaction> transactions =
-                BloodTransaction.find.query()
-                        .where()
-                        .eq("user.id", id)
-                        .eq("transactionType", "INCOMING")
-                        .orderBy("transactionDate desc")
-                        .findList();
-
-        return ok(
-                Json.toJson(transactions)
-        );
+        return ok(Json.toJson(donorService.donationHistory(id)));
     }
 
 }
