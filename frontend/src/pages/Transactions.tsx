@@ -48,17 +48,20 @@ export default function Transactions() {
       toast.success(response.data.message);
 
       fetchTransactions();
-    } catch (error) {
+    } catch (error : any) {
+      toast.error(error?.response?.data?.message || "Something went wrong");
       console.error(error);
     }
   };
 
   const rejectTransaction = async (id: number) => {
     try {
-      await api.post(`/transaction/${id}/reject`);
-
+      const response = await api.post(`/transaction/${id}/reject`);
+      toast.success(response.data.message);
       fetchTransactions();
-    } catch (error) {
+      
+    } catch (error : any) {
+      toast.error(error?.response?.data?.message || "Something went wrong");
       console.error(error);
     }
   };
