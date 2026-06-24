@@ -1,5 +1,6 @@
 package controllers;
 
+import actions.JwtAuthenticated;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.BloodTransaction;
@@ -11,6 +12,7 @@ import services.DonorService;
 
 import java.util.List;
 
+@JwtAuthenticated
 public class DonorController extends Controller {
 
     private final DonorService donorService = new DonorService();

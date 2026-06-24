@@ -1,5 +1,7 @@
 package controllers;
 
+import actions.AdminOnly;
+import actions.JwtAuthenticated;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +10,8 @@ import play.mvc.*;
 import services.AdminGetService;
 import services.AdminService;
 
+@JwtAuthenticated
+@AdminOnly
 public class AdminController extends Controller {
 
     private static final Logger logger = LoggerFactory.getLogger(AdminController.class);

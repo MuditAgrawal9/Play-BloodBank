@@ -1,0 +1,10 @@
+package security;
+
+import play.libs.typedmap.TypedKey;
+
+public class JwtAttrs {
+
+  public static final TypedKey<Long> USER_ID = TypedKey.create("userId");
+
+  public static final TypedKey<String> ROLE = TypedKey.create("role");
+}
