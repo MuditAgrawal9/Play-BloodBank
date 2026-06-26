@@ -38,19 +38,19 @@ GET     /api/admin/users                 controllers.AdminController.getUsers()
 GET     /api/admin/hospitals                 controllers.AdminController.getHospitals()
 
 #donor
-GET     /api/donor/profile/:id            controllers.DonorController.profile(id: Long)
+GET     /api/donor/profile            controllers.DonorController.profile(request: Request)
 
-PUT     /api/donor/profile/:id            controllers.DonorController.updateProfile(id: Long, request: Request)
+PUT     /api/donor/profile           controllers.DonorController.updateProfile(request: Request)
 
-GET     /api/donor/donationHistory/:id        controllers.DonorController.donationHistory(id: Long)
+GET     /api/donor/donationHistory       controllers.DonorController.donationHistory(request: Request)
 
 #Hospital
-GET     /api/hospital/profile/:id           controllers.HospitalController.profile(id: Long)
+GET     /api/hospital/profile           controllers.HospitalController.profile(request: Request)
 
-PUT     /api/hospital/profile/:id           controllers.HospitalController.updateProfile(id: Long, request: Request)
+PUT     /api/hospital/profile          controllers.HospitalController.updateProfile(request: Request)
 
-POST    /api/hospital/request/:id           controllers.HospitalController.createRequest(id: Long, request: Request)
+POST    /api/hospital/request           controllers.HospitalController.createRequest(request: Request)
 
-GET     /api/hospital/requests/:id          controllers.HospitalController.getRequests(id: Long)
+GET     /api/hospital/requests          controllers.HospitalController.getRequests(request: Request)
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

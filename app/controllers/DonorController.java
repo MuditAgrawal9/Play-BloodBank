@@ -1,5 +1,6 @@
 package controllers;
 
+import actions.DonorOnly;
 import actions.JwtAuthenticated;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -8,54 +9,61 @@ import models.Donor;
 import models.User;
 import play.libs.Json;
 import play.mvc.*;
+import security.JwtAttrs;
 import services.DonorService;
 
 import java.util.List;
 
 @JwtAuthenticated
+@DonorOnly
 public class DonorController extends Controller {
 
-    private final DonorService donorService = new DonorService();
+  private final DonorService donorService = new DonorService();
 
-    public Result profile(Long id) {
+  public Result profile(Http.Request request) {
 
-        try {
+    Long userId = request.attrs().get(JwtAttrs.USER_ID);
 
-            return ok(donorService.profile(id));
+    try {
 
-        } catch (Exception e) {
+      return ok(donorService.profile(userId));
 
-            return badRequest(Json.newObject().put("message", e.getMessage()));
-        }
+    } catch (Exception e) {
+
+      return badRequest(Json.newObject().put("message", e.getMessage()));
     }
+  }
 
-    public Result updateProfile(Long id, Http.Request request) {
+  public Result updateProfile(Http.Request request) {
 
-        try {
+    Long userId = request.attrs().get(JwtAttrs.USER_ID);
 
-            JsonNode body = request.body().asJson();
+    try {
 
-            String bloodGroup = body.get("bloodGroup").asText();
+      JsonNode body = request.body().asJson();
 
-            int age = body.get("age").asInt();
+      String bloodGroup = body.get("bloodGroup").asText();
 
-            String phone = body.get("phone").asText();
+      int age = body.get("age").asInt();
 
-            String city = body.get("city").asText();
+      String phone = body.get("phone").asText();
 
-            donorService.updateProfile(id, bloodGroup, age, phone, city);
+      String city = body.get("city").asText();
 
-            return ok(Json.newObject().put("message", "Profile updated successfully"));
+      donorService.updateProfile(userId, bloodGroup, age, phone, city);
 
-        } catch (Exception e) {
+      return ok(Json.newObject().put("message", "Profile updated successfully"));
 
-            return badRequest(Json.newObject().put("message", e.getMessage()));
-        }
+    } catch (Exception e) {
+
+      return badRequest(Json.newObject().put("message", e.getMessage()));
     }
+  }
 
-    public Result donationHistory(Long id) {
+  public Result donationHistory(Http.Request request) {
 
-        return ok(Json.toJson(donorService.donationHistory(id)));
-    }
+    Long userId = request.attrs().get(JwtAttrs.USER_ID);
 
+    return ok(Json.toJson(donorService.donationHistory(userId)));
+  }
 }

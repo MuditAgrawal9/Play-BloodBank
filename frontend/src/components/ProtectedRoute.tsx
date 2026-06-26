@@ -8,10 +8,10 @@ export default function ProtectedRoute({
   children,
 }: Props) {
 
-  const user =
-    localStorage.getItem("user");
+  const token =
+    localStorage.getItem("token");
 
-  if (!user) {
+  if (!token) {
     return <Navigate to="/login" />;
   }
 

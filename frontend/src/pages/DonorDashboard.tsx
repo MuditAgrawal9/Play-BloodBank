@@ -59,7 +59,7 @@ export default function DonorDashboard() {
 
   const [loading, setLoading] = useState(true);
 
-  const user = JSON.parse(localStorage.getItem("user")!);
+  // const user = JSON.parse(localStorage.getItem("user")!);
 
   const [donations, setDonations] = useState<Donations[]>([]);
 
@@ -74,7 +74,7 @@ export default function DonorDashboard() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await api.get(`/donor/profile/${user.id}`);
+        const response = await api.get(`/donor/profile`);
 
         const data = response.data;
 
@@ -87,7 +87,7 @@ export default function DonorDashboard() {
 
         //donation History
         const donationResponse = await api.get(
-          `/donor/donationHistory/${user.id}`,
+          `/donor/donationHistory`,
         );
 
         setDonations(donationResponse.data);
@@ -104,7 +104,7 @@ export default function DonorDashboard() {
 
   const updateProfile = async () => {
     try {
-      const response = await api.put(`/donor/profile/${user.id}`, {
+      const response = await api.put(`/donor/profile`, {
         bloodGroup,
         age: Number(age),
         phone,

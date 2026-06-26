@@ -37,7 +37,8 @@ export default function Login() {
       const user = response.data;
 
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(user));
+      // localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("role", user.role);
 
       console.log(response.data);
       toast.error(response?.data?.message);

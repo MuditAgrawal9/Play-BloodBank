@@ -52,9 +52,9 @@ interface BloodRequest {
   bloodGroup: string;
   units: number;
   status: string;
-  transactionDate : string;
-  transactionType : string;
-  user : User
+  transactionDate: string;
+  transactionType: string;
+  user: User;
 }
 
 export default function HospitalDashboard() {
@@ -72,17 +72,17 @@ export default function HospitalDashboard() {
 
   const [loading, setLoading] = useState(true);
 
-  const user = JSON.parse(localStorage.getItem("user")!);
+  // const user = JSON.parse(localStorage.getItem("user")!);
 
   const fetchData = async () => {
     try {
-      const profileResponse = await api.get(`/hospital/profile/${user.id}`);
+      const profileResponse = await api.get(`/hospital/profile`);
 
       setProfile(profileResponse.data);
 
       setName(profileResponse.data.name);
 
-      const requestResponse = await api.get(`/hospital/requests/${user.id}`);
+      const requestResponse = await api.get(`/hospital/requests`);
 
       setRequests(requestResponse.data);
     } catch (error) {
@@ -98,7 +98,7 @@ export default function HospitalDashboard() {
 
   const updateProfile = async () => {
     try {
-      const response = await api.put(`/hospital/profile/${user.id}`, {
+      const response = await api.put(`/hospital/profile`, {
         name,
       });
 
@@ -110,7 +110,7 @@ export default function HospitalDashboard() {
 
   const createRequest = async () => {
     try {
-      const response = await api.post(`/hospital/request/${user.id}`, {
+      const response = await api.post(`/hospital/request`, {
         bloodGroup,
         unitsRequired: Number(unitsRequired),
       });

@@ -5,15 +5,18 @@ type Props = {
 };
 
 export default function PrivateRoute({ children }: Props) {
-  const userString = localStorage.getItem("user");
+  // const userString = localStorage.getItem("user");
 
-  if (!userString) {
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+
+  if (!role || !token) {
     return <Navigate to="/login" />;
   }
 
-  const user = JSON.parse(userString);
+  // const user = JSON.parse(userString);
 
-  if (user.role !== "ADMIN") {
+  if (role !== "ADMIN") {
     return <Navigate to="/login" />;
   }
 
