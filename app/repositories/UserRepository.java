@@ -1,104 +1,64 @@
 package repositories;
 
 import models.User;
+import models.enums.Role;
 
 import java.util.List;
 
 public class UserRepository {
 
-    public List<User> findAll() {
+  public List<User> findAll() {
 
         return User.find.all();
-    }
+  }
 
-    public User findById(
-            Long id
-    ) {
+  public User findById(Long id) {
 
-        return User.find.byId(id);
-    }
+    return User.find.byId(id);
+  }
 
-    public User findByEmail(
-            String email
-    ) {
+  public User findByEmail(String email) {
 
-        return User.find.query()
-                .where()
-                .eq(
-                        "email",
-                        email
-                )
-                .findOne();
-    }
+    return User.find.query().where().eq("email", email).findOne();
+  }
 
-    public List<User> findHospitals() {
+  public List<User> findHospitals() {
 
-        return User.find.query()
-                .where()
-                .eq(
-                        "role",
-                        "HOSPITAL"
-                )
-                .findList();
-    }
+    return User.find.query().where().eq("role", Role.HOSPITAL).findList();
+  }
 
-    public List<User> findDonors() {
+  public List<User> findDonors() {
 
-        return User.find.query()
-                .where()
-                .eq(
-                        "role",
-                        "DONOR"
-                )
-                .findList();
-    }
+    return User.find.query().where().eq("role", "DONOR").findList();
+  }
 
-    public int countUsers() {
+  public int countUsers() {
 
-        return User.find.query()
-                .findCount();
-    }
+    return User.find.query().findCount();
+  }
 
-    public int countDonors() {
+  public int countDonors() {
 
-        return User.find.query()
-                .where()
-                .eq(
-                        "role",
-                        "DONOR"
-                )
-                .findCount();
-    }
+    return User.find.query().where().eq("role", "DONOR").findCount();
+  }
 
-    public int countHospitals() {
+  public int countHospitals() {
 
-        return User.find.query()
-                .where()
-                .eq(
-                        "role",
-                        "HOSPITAL"
-                )
-                .findCount();
-    }
+    return User.find.query().where().eq("role", "HOSPITAL").findCount();
+  }
 
-    public void save(
-            User user
-    ) {
+  public void save(User user) {
 
-        user.save();
-    }
+    user.save();
+  }
 
-    public void update(
-            User user
-    ) {
+  public void update(User user) {
 
-        user.update();
-    }
+    user.update();
+  }
 
-    public void delete(
-            User user
-    ) {
+  public void delete(User user) {
 
-        user.delete();
-    }
+    user.delete();
+  }
 }

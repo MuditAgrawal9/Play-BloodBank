@@ -1,6 +1,7 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import models.enums.Role;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http;
@@ -21,7 +22,7 @@ public class AuthController extends Controller {
           body.get("name").asText(),
           body.get("email").asText(),
           body.get("password").asText(),
-          body.get("role").asText());
+          Role.valueOf(body.get("role").asText()));
 
       return ok(Json.newObject().put("message", "Signup successful"));
 

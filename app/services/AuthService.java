@@ -3,6 +3,7 @@ package services;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.Donor;
 import models.User;
+import models.enums.Role;
 import org.mindrot.jbcrypt.BCrypt;
 import play.libs.Json;
 import repositories.UserRepository;
@@ -11,7 +12,7 @@ import utils.JwtUtil;
 public class AuthService {
   private final UserRepository userRepository = new UserRepository();
 
-  public void signup(String name, String email, String password, String role) {
+  public void signup(String name, String email, String password, Role role) {
 
     User existingUser = userRepository.findByEmail(email);
 
@@ -32,7 +33,7 @@ public class AuthService {
 
     userRepository.save(user);
 
-    if ("DONOR".equals(role)) {
+    if (role == Role.DONOR) {
 
       Donor donor = new Donor();
 
@@ -63,7 +64,7 @@ public class AuthService {
         .put("id", user.getId())
         .put("name", user.getName())
         .put("email", user.getEmail())
-        .put("role", user.getRole())
+        .put("role", user.getRole().name())
         .put("message", "Logged In Successfully");
   }
 }

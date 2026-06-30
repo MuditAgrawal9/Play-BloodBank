@@ -132,7 +132,9 @@ export default function HospitalDashboard() {
   };
 
   const logout = () => {
-    localStorage.removeItem("user");
+    // localStorage.removeItem("user");
+    localStorage.removeItem("role");
+    localStorage.removeItem("token");
 
     navigate("/login");
   };

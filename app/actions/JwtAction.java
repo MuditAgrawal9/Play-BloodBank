@@ -1,6 +1,7 @@
 package actions;
 
 import io.jsonwebtoken.Claims;
+import models.enums.Role;
 import play.mvc.Action;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -29,12 +30,16 @@ public class JwtAction extends Action.Simple {
 
       Claims claims = JwtUtil.validateToken(token);
 
+
       Long userId = Long.parseLong(claims.getSubject());
 
-      String role = claims.get("role", String.class);
+      //      String role = claims.get("role", String.class);
+
+      Role role = Role.valueOf(claims.get("role", String.class));
 
       Http.Request newRequest =
           request.addAttr(JwtAttrs.USER_ID, userId).addAttr(JwtAttrs.ROLE, role);
+
 
       return delegate.call(newRequest);
 

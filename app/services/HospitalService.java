@@ -31,7 +31,7 @@ public class HospitalService {
 
         result.put("email", hospital.getEmail());
 
-        result.put("role", hospital.getRole());
+        result.put("role", hospital.getRole().name());
 
         return result;
     }
