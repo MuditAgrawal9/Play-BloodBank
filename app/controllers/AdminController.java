@@ -14,81 +14,81 @@ import services.AdminService;
 @AdminOnly
 public class AdminController extends Controller {
 
-    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+  private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
-    private final AdminService adminService = new AdminService();
+  private final AdminService adminService = new AdminService();
 
-    private final AdminGetService adminGetService = new AdminGetService();
+  private final AdminGetService adminGetService = new AdminGetService();
 
-    public Result getStats() {
-        return ok(adminGetService.getStats());
+  public Result getStats() {
+    return ok(adminGetService.getStats());
+  }
+
+  public Result getDonors() {
+    return ok(adminGetService.getDonors());
+  }
+
+  public Result getUsers() {
+    return ok(Json.toJson(adminGetService.getUsers()));
+  }
+
+  public Result getHospitals() {
+    return ok(Json.toJson(adminGetService.getHospitals()));
+  }
+
+  public Result getInventory() {
+    return ok(Json.toJson(adminGetService.getInventory()));
+  }
+
+  public Result getTransactions() {
+    return ok(Json.toJson(adminGetService.getTransactions()));
+  }
+
+  public Result approve(Long id) {
+
+    try {
+
+      adminService.approveTransaction(id);
+
+      return ok(Json.newObject().put("message", "Transaction approved successfully"));
+
+    } catch (Exception e) {
+
+      return badRequest(Json.newObject().put("message", e.getMessage()));
     }
+  }
 
-    public Result getDonors() {
-        return ok(adminGetService.getDonors());
+  public Result reject(Long id) {
+
+    try {
+
+      adminService.rejectTransaction(id);
+
+      return ok(Json.newObject().put("message", "Transaction rejected successfully"));
+
+    } catch (Exception e) {
+
+      return badRequest(Json.newObject().put("message", e.getMessage()));
     }
+  }
 
-    public Result getUsers() {
-        return ok(Json.toJson(adminGetService.getUsers()));
+  public Result recordDonation(Http.Request request) {
+
+    try {
+
+      JsonNode body = request.body().asJson();
+
+      Long donorId = body.get("donorId").asLong();
+
+      Integer units = body.get("units").asInt();
+
+      adminService.recordDonation(donorId, units);
+
+      return ok(Json.newObject().put("message", "Donation recorded successfully"));
+
+    } catch (Exception e) {
+
+      return badRequest(Json.newObject().put("message", e.getMessage()));
     }
-
-    public Result getHospitals() {
-        return ok(Json.toJson(adminGetService.getHospitals()));
-    }
-
-    public Result getInventory() {
-        return ok(Json.toJson(adminGetService.getInventory()));
-    }
-
-    public Result getTransactions() {
-        return ok(Json.toJson(adminGetService.getTransactions()));
-    }
-
-    public Result approve(Long id) {
-
-        try {
-
-            adminService.approveTransaction(id);
-
-            return ok(Json.newObject().put("message", "Transaction approved successfully"));
-
-        } catch (Exception e) {
-
-            return badRequest(Json.newObject().put("message", e.getMessage()));
-        }
-    }
-
-    public Result reject(Long id) {
-
-        try {
-
-            adminService.rejectTransaction(id);
-
-            return ok(Json.newObject().put("message", "Transaction rejected successfully"));
-
-        } catch (Exception e) {
-
-            return badRequest(Json.newObject().put("message", e.getMessage()));
-        }
-    }
-
-    public Result recordDonation(Http.Request request) {
-
-        try {
-
-            JsonNode body = request.body().asJson();
-
-            Long donorId = body.get("donorId").asLong();
-
-            Integer units = body.get("units").asInt();
-
-            adminService.recordDonation(donorId, units);
-
-            return ok(Json.newObject().put("message", "Donation recorded successfully"));
-
-        } catch (Exception e) {
-
-            return badRequest(Json.newObject().put("message", e.getMessage()));
-        }
-    }
+  }
 }

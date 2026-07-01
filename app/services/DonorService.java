@@ -46,10 +46,14 @@ public class DonorService {
 
         result.put("city", user.getCity());
 
+        result.put("pincode", user.getPincode());
+
+        result.put("address", user.getAddress());
+
         return result;
     }
 
-    public void updateProfile(Long id, String bloodGroup, int age, String phone, String city) {
+    public void updateProfile(Long id, String bloodGroup, int age, String phone, String city,String address, String pincode) {
 
         User user = userRepository.findById(id);
 
@@ -66,6 +70,10 @@ public class DonorService {
         user.setPhone(phone);
 
         user.setCity(city);
+
+        user.setAddress(address);
+
+        user.setPincode(pincode);
 
         donorRepository.update(donor);
 

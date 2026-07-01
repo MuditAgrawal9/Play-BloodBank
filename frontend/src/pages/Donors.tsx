@@ -66,6 +66,10 @@ export default function Donors() {
                   <TableHead>Phone</TableHead>
 
                   <TableHead>City</TableHead>
+
+                  <TableHead>Address</TableHead>
+
+                  <TableHead>Pin Code</TableHead>
                 </TableRow>
               </TableHeader>
 
@@ -83,6 +87,10 @@ export default function Donors() {
                     <TableCell>{donor.user.phone}</TableCell>
 
                     <TableCell>{donor.user.city}</TableCell>
+
+                    <TableCell>{donor.user.address}</TableCell>
+
+                    <TableCell>{donor.user.pincode}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

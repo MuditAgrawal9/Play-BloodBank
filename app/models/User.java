@@ -27,6 +27,8 @@ public class User extends Model {
 
   private String address;
 
+  private String pincode;
+
   public static final Finder<Long, User> find = new Finder<>(User.class);
 
   public Long getId() {
@@ -87,5 +89,13 @@ public class User extends Model {
 
   public void setAddress(String address) {
     this.address = address;
+  }
+
+  public String getPincode() {
+    return pincode;
+  }
+
+  public void setPincode(String pincode) {
+    this.pincode = pincode;
   }
 }

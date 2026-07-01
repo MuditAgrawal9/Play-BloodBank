@@ -109,7 +109,7 @@ export default function Transactions() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>ID</TableHead>
+                  <TableHead>Name</TableHead>
 
                   <TableHead>Blood Group</TableHead>
 
@@ -128,7 +128,7 @@ export default function Transactions() {
               <TableBody>
                 {transactions.map((tx) => (
                   <TableRow key={tx.id}>
-                    <TableCell>{tx.id}</TableCell>
+                    <TableCell>{tx.user.name}</TableCell>
 
                     <TableCell className="font-medium">
                       {tx.bloodGroup}

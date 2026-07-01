@@ -3,16 +3,10 @@ package controllers;
 import actions.DonorOnly;
 import actions.JwtAuthenticated;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import models.BloodTransaction;
-import models.Donor;
-import models.User;
 import play.libs.Json;
 import play.mvc.*;
 import security.JwtAttrs;
 import services.DonorService;
-
-import java.util.List;
 
 @JwtAuthenticated
 @DonorOnly
@@ -50,7 +44,11 @@ public class DonorController extends Controller {
 
       String city = body.get("city").asText();
 
-      donorService.updateProfile(userId, bloodGroup, age, phone, city);
+      String address = body.get("address").asText();
+
+      String pincode = body.get("pincode").asText();
+
+      donorService.updateProfile(userId, bloodGroup, age, phone, city, address, pincode);
 
       return ok(Json.newObject().put("message", "Profile updated successfully"));
 

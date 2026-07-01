@@ -42,7 +42,13 @@ public class HospitalController extends Controller {
 
       JsonNode body = request.body().asJson();
 
-      hospitalService.updateProfile(userId, body.get("name").asText());
+      hospitalService.updateProfile(
+          userId,
+          body.get("name").asText(),
+          body.get("phone").asText(),
+          body.get("city").asText(),
+          body.get("address").asText(),
+          body.get("pincode").asText());
 
       return ok(Json.newObject().put("message", "Profile updated successfully"));
 
@@ -61,7 +67,7 @@ public class HospitalController extends Controller {
       JsonNode body = request.body().asJson();
 
       hospitalService.createRequest(
-              userId, body.get("bloodGroup").asText(), body.get("unitsRequired").asInt());
+          userId, body.get("bloodGroup").asText(), body.get("unitsRequired").asInt());
 
       return ok(Json.newObject().put("message", "Request submitted successfully"));
 

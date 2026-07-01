@@ -66,6 +66,8 @@ export default function Users() {
                   <TableHead>City</TableHead>
 
                   <TableHead>Address</TableHead>
+
+                  <TableHead>Pin Code</TableHead>
                 </TableRow>
               </TableHeader>
 
@@ -83,6 +85,8 @@ export default function Users() {
                     <TableCell>{user.city}</TableCell>
 
                     <TableCell>{user.address}</TableCell>
+
+                    <TableCell>{user.pincode}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

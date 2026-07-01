@@ -66,6 +66,8 @@ export default function Hospitals() {
                   <TableHead>City</TableHead>
 
                   <TableHead>Address</TableHead>
+
+                  <TableHead>Pin Code</TableHead>
                 </TableRow>
               </TableHeader>
 
@@ -83,6 +85,8 @@ export default function Hospitals() {
                     <TableCell>{hospital.city}</TableCell>
 
                     <TableCell>{hospital.address}</TableCell>
+
+                    <TableCell>{hospital.pincode}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
