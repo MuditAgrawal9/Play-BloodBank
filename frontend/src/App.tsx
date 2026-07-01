@@ -92,7 +92,7 @@ function App() {
           path="/donor"
           element={
             <ProtectedRoute>
-                <DonorDashboard />
+              <DonorDashboard />
             </ProtectedRoute>
           }
         />
@@ -101,7 +101,7 @@ function App() {
           path="/hospital"
           element={
             <ProtectedRoute>
-                <HospitalDashboard />
+              <HospitalDashboard />
             </ProtectedRoute>
           }
         />

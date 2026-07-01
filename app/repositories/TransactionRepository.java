@@ -6,34 +6,45 @@ import java.util.List;
 
 public class TransactionRepository {
 
-    public BloodTransaction findById(Long id) {
-        return BloodTransaction.find.byId(id);
-    }
+  public BloodTransaction findById(Long id) {
+    return BloodTransaction.find.byId(id);
+  }
 
-    public List<BloodTransaction> findAll() {
-        return BloodTransaction.find.query().orderBy("transactionDate desc").findList();
-    }
+  public List<BloodTransaction> findAll() {
+    return BloodTransaction.find.query().orderBy("transactionDate desc").findList();
+  }
 
-    public void save(BloodTransaction tx) {
-        tx.save();
-    }
+  public void save(BloodTransaction tx) {
+    tx.save();
+  }
 
-    public void update(BloodTransaction tx) {
-        tx.update();
-    }
+  public void update(BloodTransaction tx) {
+    tx.update();
+  }
 
-    public int countPendingTransactions() {
+  public int countPendingTransactions() {
 
-        return BloodTransaction.find.query().where().eq("status", "PENDING").findCount();
-    }
+    return BloodTransaction.find.query().where().eq("status", "PENDING").findCount();
+  }
 
-    public List<BloodTransaction> findIncomingByUserId(Long userId) {
+  public List<BloodTransaction> findIncomingByUserId(Long userId) {
 
-        return BloodTransaction.find.query().where().eq("user.id", userId).eq("transactionType", "INCOMING").orderBy("transactionDate desc").findList();
-    }
+    return BloodTransaction.find
+        .query()
+        .where()
+        .eq("user.id", userId)
+        .eq("transactionType", "INCOMING")
+        .orderBy("transactionDate desc")
+        .findList();
+  }
 
-    public List<BloodTransaction> findByUserId(Long userId) {
+  public List<BloodTransaction> findByUserId(Long userId) {
 
-        return BloodTransaction.find.query().where().eq("user.id", userId).orderBy("transactionDate desc").findList();
-    }
+    return BloodTransaction.find
+        .query()
+        .where()
+        .eq("user.id", userId)
+        .orderBy("transactionDate desc")
+        .findList();
+  }
 }

@@ -9,7 +9,7 @@ public class UserRepository {
 
   public List<User> findAll() {
 
-        return User.find.all();
+    return User.find.all();
   }
 
   public User findById(Long id) {

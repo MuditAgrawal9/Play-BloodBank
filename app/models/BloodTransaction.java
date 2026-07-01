@@ -11,80 +11,77 @@ import java.time.LocalDateTime;
 @Table(name = "blood_transactions")
 public class BloodTransaction extends Model {
 
-    @Id
-    private Long id;
+  @Id private Long id;
 
-    @ManyToOne
-    private User user;
+  @ManyToOne private User user;
 
-    private String bloodGroup;
+  private String bloodGroup;
 
-    private Integer units;
+  private Integer units;
 
-    // INCOMING / OUTGOING
-    private String transactionType;
+  // INCOMING / OUTGOING
+  private String transactionType;
 
-    // PENDING / APPROVED / REJECTED / COMPLETED
-    private String status;
+  // PENDING / APPROVED / REJECTED / COMPLETED
+  private String status;
 
-    private LocalDateTime transactionDate;
+  private LocalDateTime transactionDate;
 
-    public static final Finder<Long, BloodTransaction> find =
-            new Finder<>(BloodTransaction.class);
+  public static final Finder<Long, BloodTransaction> find = new Finder<>(BloodTransaction.class);
 
-    public Long getId() {
-        return id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public User getUser() {
-        return user;
-    }
+  public User getUser() {
+    return user;
+  }
 
-    public String getBloodGroup() {
-        return bloodGroup;
-    }
+  public String getBloodGroup() {
+    return bloodGroup;
+  }
 
-    public Integer getUnits() {
-        return units;
-    }
+  public Integer getUnits() {
+    return units;
+  }
 
-    public String getTransactionType() {
-        return transactionType;
-    }
+  public String getTransactionType() {
+    return transactionType;
+  }
 
-    public String getStatus() {
-        return status;
-    }
+  public String getStatus() {
+    return status;
+  }
 
-    public LocalDateTime getTransactionDate() {
-        return transactionDate;
-    }
+  public LocalDateTime getTransactionDate() {
+    return transactionDate;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+  public void setUser(User user) {
+    this.user = user;
+  }
 
-    public void setBloodGroup(String bloodGroup) {
-        this.bloodGroup = bloodGroup;
-    }
+  public void setBloodGroup(String bloodGroup) {
+    this.bloodGroup = bloodGroup;
+  }
 
-    public void setUnits(Integer units) {
-        this.units = units;
-    }
+  public void setUnits(Integer units) {
+    this.units = units;
+  }
 
-    public void setTransactionType(String transactionType) {
-        this.transactionType = transactionType;
-    }
+  public void setTransactionType(String transactionType) {
+    this.transactionType = transactionType;
+  }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+  public void setStatus(String status) {
+    this.status = status;
+  }
 
-    public void setTransactionDate(LocalDateTime transactionDate) {
-        this.transactionDate = transactionDate;
-    }
+  public void setTransactionDate(LocalDateTime transactionDate) {
+    this.transactionDate = transactionDate;
+  }
 }

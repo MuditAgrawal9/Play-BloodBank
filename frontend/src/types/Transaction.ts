@@ -2,7 +2,7 @@ import type { User } from "./User";
 
 export interface Transaction {
   id: number;
-  user : User
+  user: User;
   bloodGroup: string;
   transactionType: string;
   units: number;

@@ -16,74 +16,74 @@ import java.util.List;
 
 public class AdminGetService {
 
-    private final UserRepository userRepository = new UserRepository();
+  private final UserRepository userRepository = new UserRepository();
 
-    private final DonorRepository donorRepository = new DonorRepository();
+  private final DonorRepository donorRepository = new DonorRepository();
 
-    private final InventoryRepository inventoryRepository = new InventoryRepository();
+  private final InventoryRepository inventoryRepository = new InventoryRepository();
 
-    private final TransactionRepository transactionRepository = new TransactionRepository();
+  private final TransactionRepository transactionRepository = new TransactionRepository();
 
-    public ObjectNode getStats() {
+  public ObjectNode getStats() {
 
-        ObjectNode result = Json.newObject();
+    ObjectNode result = Json.newObject();
 
-        result.put("totalUsers", userRepository.countUsers());
+    result.put("totalUsers", userRepository.countUsers());
 
-        result.put("totalDonors", userRepository.countDonors());
+    result.put("totalDonors", userRepository.countDonors());
 
-        result.put("totalHospitals", userRepository.countHospitals());
+    result.put("totalHospitals", userRepository.countHospitals());
 
-        result.put("pendingRequests", transactionRepository.countPendingTransactions());
+    result.put("pendingRequests", transactionRepository.countPendingTransactions());
 
-        return result;
+    return result;
+  }
+
+  public List<User> getUsers() {
+
+    return userRepository.findAll();
+  }
+
+  public ArrayNode getDonors() {
+
+    ArrayNode array = Json.newArray();
+
+    List<Donor> donors = donorRepository.findAll();
+
+    for (Donor donor : donors) {
+
+      ObjectNode node = Json.newObject();
+
+      node.put("id", donor.getId());
+
+      node.put("bloodGroup", donor.getBloodGroup());
+
+      node.put("age", donor.getAge());
+
+      //            node.put("phone", donor.getPhone());
+      //
+      //            node.put("city", donor.getCity());
+
+      node.set("user", Json.toJson(donor.getUser()));
+
+      array.add(node);
     }
 
-    public List<User> getUsers() {
+    return array;
+  }
 
-        return userRepository.findAll();
-    }
+  public List<User> getHospitals() {
 
-    public ArrayNode getDonors() {
+    return userRepository.findHospitals();
+  }
 
-        ArrayNode array = Json.newArray();
+  public List<BloodInventory> getInventory() {
 
-        List<Donor> donors = donorRepository.findAll();
+    return inventoryRepository.findAll();
+  }
 
-        for (Donor donor : donors) {
+  public List<BloodTransaction> getTransactions() {
 
-            ObjectNode node = Json.newObject();
-
-            node.put("id", donor.getId());
-
-            node.put("bloodGroup", donor.getBloodGroup());
-
-            node.put("age", donor.getAge());
-
-//            node.put("phone", donor.getPhone());
-//
-//            node.put("city", donor.getCity());
-
-            node.set("user", Json.toJson(donor.getUser()));
-
-            array.add(node);
-        }
-
-        return array;
-    }
-
-    public List<User> getHospitals() {
-
-        return userRepository.findHospitals();
-    }
-
-    public List<BloodInventory> getInventory() {
-
-        return inventoryRepository.findAll();
-    }
-
-    public List<BloodTransaction> getTransactions() {
-
-        return transactionRepository.findAll();
-    }
+    return transactionRepository.findAll();
+  }
 }

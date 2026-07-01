@@ -12,76 +12,83 @@ import repositories.UserRepository;
 import java.util.List;
 
 public class DonorService {
-    private final UserRepository userRepository = new UserRepository();
+  private final UserRepository userRepository = new UserRepository();
 
-    private final DonorRepository donorRepository = new DonorRepository();
+  private final DonorRepository donorRepository = new DonorRepository();
 
-    private final TransactionRepository transactionRepository = new TransactionRepository();
+  private final TransactionRepository transactionRepository = new TransactionRepository();
 
-    public ObjectNode profile(Long id) {
+  public ObjectNode profile(Long id) {
 
-        User user = userRepository.findById(id);
+    User user = userRepository.findById(id);
 
-        if (user == null) {
-            throw new RuntimeException("User not found");
-        }
-
-        Donor donor = donorRepository.findByUserId(id);
-
-        if (donor == null) {
-            throw new RuntimeException("Donor not found");
-        }
-
-        ObjectNode result = Json.newObject();
-
-        result.put("name", user.getName());
-
-        result.put("email", user.getEmail());
-
-        result.put("bloodGroup", donor.getBloodGroup());
-
-        result.put("age", donor.getAge());
-
-        result.put("phone", user.getPhone());
-
-        result.put("city", user.getCity());
-
-        result.put("pincode", user.getPincode());
-
-        result.put("address", user.getAddress());
-
-        return result;
+    if (user == null) {
+      throw new RuntimeException("User not found");
     }
 
-    public void updateProfile(Long id, String bloodGroup, int age, String phone, String city,String address, String pincode) {
+    Donor donor = donorRepository.findByUserId(id);
 
-        User user = userRepository.findById(id);
-
-        Donor donor = donorRepository.findByUserId(id);
-
-        if (donor == null) {
-            throw new RuntimeException("Donor not found");
-        }
-
-        donor.setBloodGroup(bloodGroup);
-
-        donor.setAge(age);
-
-        user.setPhone(phone);
-
-        user.setCity(city);
-
-        user.setAddress(address);
-
-        user.setPincode(pincode);
-
-        donorRepository.update(donor);
-
-        userRepository.update(user);
+    if (donor == null) {
+      throw new RuntimeException("Donor not found");
     }
 
-    public List<BloodTransaction> donationHistory(Long id) {
+    ObjectNode result = Json.newObject();
 
-        return transactionRepository.findIncomingByUserId(id);
+    result.put("name", user.getName());
+
+    result.put("email", user.getEmail());
+
+    result.put("bloodGroup", donor.getBloodGroup());
+
+    result.put("age", donor.getAge());
+
+    result.put("phone", user.getPhone());
+
+    result.put("city", user.getCity());
+
+    result.put("pincode", user.getPincode());
+
+    result.put("address", user.getAddress());
+
+    return result;
+  }
+
+  public void updateProfile(
+      Long id,
+      String bloodGroup,
+      int age,
+      String phone,
+      String city,
+      String address,
+      String pincode) {
+
+    User user = userRepository.findById(id);
+
+    Donor donor = donorRepository.findByUserId(id);
+
+    if (donor == null) {
+      throw new RuntimeException("Donor not found");
     }
+
+    donor.setBloodGroup(bloodGroup);
+
+    donor.setAge(age);
+
+    user.setPhone(phone);
+
+    user.setCity(city);
+
+    user.setAddress(address);
+
+    user.setPincode(pincode);
+
+    donorRepository.update(donor);
+
+    userRepository.update(user);
+  }
+
+  public List<BloodTransaction> donationHistory(Long id) {
+
+    return transactionRepository.findIncomingByUserId(id);
+  }
 }

@@ -6,16 +6,16 @@ import java.util.List;
 
 public class InventoryRepository {
 
-    public BloodInventory findByBloodGroup(String bloodGroup) {
+  public BloodInventory findByBloodGroup(String bloodGroup) {
 
-        return BloodInventory.find.query().where().eq("bloodGroup", bloodGroup).findOne();
-    }
+    return BloodInventory.find.query().where().eq("bloodGroup", bloodGroup).findOne();
+  }
 
-    public void update(BloodInventory inventory) {
-        inventory.update();
-    }
+  public void update(BloodInventory inventory) {
+    inventory.update();
+  }
 
-    public List<BloodInventory> findAll() {
-        return BloodInventory.find.all();
-    }
+  public List<BloodInventory> findAll() {
+    return BloodInventory.find.all();
+  }
 }

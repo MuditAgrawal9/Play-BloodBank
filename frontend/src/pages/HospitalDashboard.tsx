@@ -5,7 +5,13 @@ import api from "../services/api";
 
 import { toast } from "sonner";
 
-import { LogOut, Pencil, Building2, ClipboardList, Droplet } from "lucide-react";
+import {
+  LogOut,
+  Pencil,
+  Building2,
+  ClipboardList,
+  Droplet,
+} from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -227,10 +233,21 @@ export default function HospitalDashboard() {
 
   const stats = useMemo(() => {
     const totalUnits = requests.reduce((sum, r) => sum + (r.units || 0), 0);
-    const pending = requests.filter((r) => r.status?.toUpperCase() === "PENDING").length;
-    const approved = requests.filter((r) => r.status?.toUpperCase() === "APPROVED").length;
-    const approvalRate = requests.length ? Math.round((approved / requests.length) * 100) : 0;
-    return { totalRequests: requests.length, totalUnits, pending, approvalRate };
+    const pending = requests.filter(
+      (r) => r.status?.toUpperCase() === "PENDING",
+    ).length;
+    const approved = requests.filter(
+      (r) => r.status?.toUpperCase() === "APPROVED",
+    ).length;
+    const approvalRate = requests.length
+      ? Math.round((approved / requests.length) * 100)
+      : 0;
+    return {
+      totalRequests: requests.length,
+      totalUnits,
+      pending,
+      approvalRate,
+    };
   }, [requests]);
 
   if (loading) {
@@ -263,17 +280,26 @@ export default function HospitalDashboard() {
               <div>
                 <h1
                   className="text-3xl md:text-4xl tracking-tight"
-                  style={{ fontFamily: FONT_DISPLAY, color: COLORS.ink, fontWeight: 600 }}
+                  style={{
+                    fontFamily: FONT_DISPLAY,
+                    color: COLORS.ink,
+                    fontWeight: 600,
+                  }}
                 >
                   {profile?.name}
                 </h1>
                 <p className="mt-1" style={{ color: COLORS.muted }}>
-                  Track requests and keep facility details current for donor matching.
+                  Track requests and keep facility details current for donor
+                  matching.
                 </p>
               </div>
             </div>
 
-            <Button variant="outline" onClick={logout} className="self-start md:self-auto">
+            <Button
+              variant="outline"
+              onClick={logout}
+              className="self-start md:self-auto"
+            >
               <LogOut className="mr-2 h-4 w-4" />
               Logout
             </Button>
@@ -295,7 +321,10 @@ export default function HospitalDashboard() {
                   {stats.totalRequests}
                 </p>
               </div>
-              <ClipboardList className="h-9 w-9" style={{ color: COLORS.navy }} />
+              <ClipboardList
+                className="h-9 w-9"
+                style={{ color: COLORS.navy }}
+              />
             </CardContent>
           </Card>
 
@@ -325,18 +354,27 @@ export default function HospitalDashboard() {
                   </p>
                   <p
                     className="mt-1 text-xl font-semibold"
-                    style={{ color: stats.approvalRate >= 50 ? COLORS.success : COLORS.amber }}
+                    style={{
+                      color:
+                        stats.approvalRate >= 50
+                          ? COLORS.success
+                          : COLORS.amber,
+                    }}
                   >
                     {stats.approvalRate}%
                   </p>
                 </div>
               </div>
-              <div className="mt-3 h-1.5 w-full rounded-full overflow-hidden" style={{ backgroundColor: "#E5E7EB" }}>
+              <div
+                className="mt-3 h-1.5 w-full rounded-full overflow-hidden"
+                style={{ backgroundColor: "#E5E7EB" }}
+              >
                 <div
                   className="h-full rounded-full transition-all"
                   style={{
                     width: `${stats.approvalRate}%`,
-                    backgroundColor: stats.approvalRate >= 50 ? COLORS.success : COLORS.amber,
+                    backgroundColor:
+                      stats.approvalRate >= 50 ? COLORS.success : COLORS.amber,
                   }}
                 />
               </div>
@@ -366,11 +404,21 @@ export default function HospitalDashboard() {
                 { label: "Email", value: profile?.email },
                 { label: "Phone", value: profile?.phone || "—" },
                 { label: "City", value: profile?.city || "—" },
-                { label: "Address", value: profile?.address || "—", span: true },
+                {
+                  label: "Address",
+                  value: profile?.address || "—",
+                  span: true,
+                },
                 { label: "Pincode", value: profile?.pincode || "—" },
               ].map((field) => (
-                <div key={field.label} className={field.span ? "sm:col-span-2" : ""}>
-                  <p className="text-xs uppercase tracking-wide" style={{ color: COLORS.muted }}>
+                <div
+                  key={field.label}
+                  className={field.span ? "sm:col-span-2" : ""}
+                >
+                  <p
+                    className="text-xs uppercase tracking-wide"
+                    style={{ color: COLORS.muted }}
+                  >
                     {field.label}
                   </p>
                   <p className="mt-1 text-base" style={{ color: COLORS.ink }}>
@@ -392,16 +440,21 @@ export default function HospitalDashboard() {
             <CardContent className="space-y-4">
               <div>
                 <Label>Blood Group</Label>
-                <Select value={bloodGroup} onValueChange={(value) => setBloodGroup(value)}>
+                <Select
+                  value={bloodGroup}
+                  onValueChange={(value) => setBloodGroup(value)}
+                >
                   <SelectTrigger className="mt-2">
                     <SelectValue placeholder="Select Blood Group" />
                   </SelectTrigger>
                   <SelectContent>
-                    {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map((bg) => (
-                      <SelectItem key={bg} value={bg}>
-                        {bg}
-                      </SelectItem>
-                    ))}
+                    {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map(
+                      (bg) => (
+                        <SelectItem key={bg} value={bg}>
+                          {bg}
+                        </SelectItem>
+                      ),
+                    )}
                   </SelectContent>
                 </Select>
               </div>
@@ -418,7 +471,11 @@ export default function HospitalDashboard() {
                 />
               </div>
 
-              <Button onClick={createRequest} disabled={submittingRequest} className="w-full">
+              <Button
+                onClick={createRequest}
+                disabled={submittingRequest}
+                className="w-full"
+              >
                 {submittingRequest ? "Submitting..." : "Submit Request"}
               </Button>
             </CardContent>
@@ -447,17 +504,25 @@ export default function HospitalDashboard() {
               <TableBody>
                 {requests.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={4} className="text-center" style={{ color: COLORS.muted }}>
+                    <TableCell
+                      colSpan={4}
+                      className="text-center"
+                      style={{ color: COLORS.muted }}
+                    >
                       No requests yet — submit one above to get started.
                     </TableCell>
                   </TableRow>
                 ) : (
                   requests.map((request) => (
                     <TableRow key={request.id}>
-                      <TableCell style={{ fontFamily: FONT_MONO, fontSize: 13 }}>
+                      <TableCell
+                        style={{ fontFamily: FONT_MONO, fontSize: 13 }}
+                      >
                         {request.bloodGroup}
                       </TableCell>
-                      <TableCell style={{ fontFamily: FONT_MONO, fontSize: 13 }}>
+                      <TableCell
+                        style={{ fontFamily: FONT_MONO, fontSize: 13 }}
+                      >
                         {request.units}
                       </TableCell>
                       <TableCell>
@@ -465,7 +530,9 @@ export default function HospitalDashboard() {
                           {request.status}
                         </Badge>
                       </TableCell>
-                      <TableCell style={{ fontFamily: FONT_MONO, fontSize: 13 }}>
+                      <TableCell
+                        style={{ fontFamily: FONT_MONO, fontSize: 13 }}
+                      >
                         {new Date(request.transactionDate).toLocaleDateString()}
                       </TableCell>
                     </TableRow>
@@ -495,7 +562,9 @@ export default function HospitalDashboard() {
               <Input
                 className="mt-2"
                 value={draft.name}
-                onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))}
+                onChange={(e) =>
+                  setDraft((d) => ({ ...d, name: e.target.value }))
+                }
               />
             </div>
 
@@ -504,7 +573,9 @@ export default function HospitalDashboard() {
               <Input
                 className="mt-2"
                 value={draft.phone}
-                onChange={(e) => setDraft((d) => ({ ...d, phone: e.target.value }))}
+                onChange={(e) =>
+                  setDraft((d) => ({ ...d, phone: e.target.value }))
+                }
               />
             </div>
 
@@ -512,7 +583,9 @@ export default function HospitalDashboard() {
               <Label>City</Label>
               <Select
                 value={draft.city}
-                onValueChange={(value) => setDraft((d) => ({ ...d, city: value }))}
+                onValueChange={(value) =>
+                  setDraft((d) => ({ ...d, city: value }))
+                }
               >
                 <SelectTrigger className="mt-2">
                   <SelectValue placeholder="Select City" />
@@ -532,7 +605,9 @@ export default function HospitalDashboard() {
               <Input
                 className="mt-2"
                 value={draft.address}
-                onChange={(e) => setDraft((d) => ({ ...d, address: e.target.value }))}
+                onChange={(e) =>
+                  setDraft((d) => ({ ...d, address: e.target.value }))
+                }
                 placeholder="Enter facility address"
               />
             </div>
@@ -542,7 +617,9 @@ export default function HospitalDashboard() {
               <Input
                 className="mt-2"
                 value={draft.pincode}
-                onChange={(e) => setDraft((d) => ({ ...d, pincode: e.target.value }))}
+                onChange={(e) =>
+                  setDraft((d) => ({ ...d, pincode: e.target.value }))
+                }
                 placeholder="Enter pincode"
                 maxLength={6}
               />
@@ -550,7 +627,11 @@ export default function HospitalDashboard() {
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsEditOpen(false)} disabled={saving}>
+            <Button
+              variant="outline"
+              onClick={() => setIsEditOpen(false)}
+              disabled={saving}
+            >
               Cancel
             </Button>
             <Button onClick={updateProfile} disabled={saving}>

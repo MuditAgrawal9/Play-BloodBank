@@ -2,17 +2,6 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# An example controller showing a sample home page
-#GET     /                           controllers.HomeController.index()
-#GET     /                           controllers.AuthController.dashboard(request: Request)
-
-
-GET     /test-ebean                 controllers.TestController.testEbean()
-GET     /test-donor                 controllers.TestController.createDonor()
-GET     /view-donor                 controllers.TestController.viewDonor()
-GET     /seed-inventory             controllers.TestController.seedInventory()
-GET     /test-request               controllers.TestController.createRequest()
-
 #Client based routing endpoints
 #Auth
 POST    /api/signup                 controllers.AuthController.signup(request: Request)

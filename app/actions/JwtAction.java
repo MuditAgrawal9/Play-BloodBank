@@ -30,7 +30,6 @@ public class JwtAction extends Action.Simple {
 
       Claims claims = JwtUtil.validateToken(token);
 
-
       Long userId = Long.parseLong(claims.getSubject());
 
       //      String role = claims.get("role", String.class);
@@ -39,7 +38,6 @@ public class JwtAction extends Action.Simple {
 
       Http.Request newRequest =
           request.addAttr(JwtAttrs.USER_ID, userId).addAttr(JwtAttrs.ROLE, role);
-
 
       return delegate.call(newRequest);
 

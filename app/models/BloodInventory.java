@@ -9,33 +9,31 @@ import jakarta.persistence.*;
 @Table(name = "blood_inventory")
 public class BloodInventory extends Model {
 
-    @Id
-    private Long id;
+  @Id private Long id;
 
-    private String bloodGroup;
+  private String bloodGroup;
 
-    private Integer unitsAvailable;
+  private Integer unitsAvailable;
 
-    public static final Finder<Long, BloodInventory> find =
-            new Finder<>(BloodInventory.class);
+  public static final Finder<Long, BloodInventory> find = new Finder<>(BloodInventory.class);
 
-    public Long getId() {
-        return id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public String getBloodGroup() {
-        return bloodGroup;
-    }
+  public String getBloodGroup() {
+    return bloodGroup;
+  }
 
-    public void setBloodGroup(String bloodGroup) {
-        this.bloodGroup = bloodGroup;
-    }
+  public void setBloodGroup(String bloodGroup) {
+    this.bloodGroup = bloodGroup;
+  }
 
-    public Integer getUnitsAvailable() {
-        return unitsAvailable;
-    }
+  public Integer getUnitsAvailable() {
+    return unitsAvailable;
+  }
 
-    public void setUnitsAvailable(Integer unitsAvailable) {
-        this.unitsAvailable = unitsAvailable;
-    }
+  public void setUnitsAvailable(Integer unitsAvailable) {
+    this.unitsAvailable = unitsAvailable;
+  }
 }
