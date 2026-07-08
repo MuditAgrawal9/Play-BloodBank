@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: bloodbank-mysql
+
+    environment:
+      MYSQL_ROOT_PASSWORD: Mudit#12
+      MYSQL_DATABASE: bloodbank_ebean
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  backend:
+    build: .
+    container_name: bloodbank-backend
+
+    depends_on:
+      - mysql
+
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/bloodbank_ebean
+      DB_USERNAME: root
+      DB_PASSWORD: Mudit#12
+      PLAY_HTTP_SECRET_KEY: 8d7e2c6a1f4b9e3c7d5a8f2b1c9e6d4f7a3b8c2d5e9f1a6b4c8d2e7f3a9b5c1d
+
+    ports:
+      - "9000:9000"
+
+  frontend:
+    build: ./frontend
+    container_name: bloodbank-frontend
+
+    depends_on:
+      - backend
+
+    ports:
+      - "3000:80"
+
+volumes:
+  mysql_data:
