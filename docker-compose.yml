@@ -6,8 +6,8 @@ services:
     container_name: bloodbank-mysql
 
     environment:
-      MYSQL_ROOT_PASSWORD: Mudit#12
-      MYSQL_DATABASE: bloodbank_ebean
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
 
     ports:
       - "3306:3306"
@@ -23,10 +23,11 @@ services:
       - mysql
 
     environment:
-      DB_URL: jdbc:mysql://mysql:3306/bloodbank_ebean
-      DB_USERNAME: root
-      DB_PASSWORD: Mudit#12
-      PLAY_HTTP_SECRET_KEY: 8d7e2c6a1f4b9e3c7d5a8f2b1c9e6d4f7a3b8c2d5e9f1a6b4c8d2e7f3a9b5c1d
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      PLAY_HTTP_SECRET_KEY: ${PLAY_HTTP_SECRET_KEY}
+      JWT_SECRET: ${JWT_SECRET}
 
     ports:
       - "9000:9000"

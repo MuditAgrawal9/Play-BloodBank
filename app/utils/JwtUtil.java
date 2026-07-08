@@ -6,10 +6,11 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import models.enums.Role;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class JwtUtil {
 
-  private static final String SECRET = "bloodbankmanagementsystemsecretkey123456789";
+  private static final String SECRET = Objects.requireNonNull(System.getenv("JWT_SECRET"));
 
   public static String generateToken(Long userId, Role role) {
 
