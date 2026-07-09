@@ -18,3 +18,9 @@ libraryDependencies ++= Seq(
   "io.jsonwebtoken" % "jjwt-impl" % "0.11.5",
   "io.jsonwebtoken" % "jjwt-jackson" % "0.11.5"
 )
+
+libraryDependencies ++= Seq(
+  "io.opentelemetry" % "opentelemetry-api" % "1.40.0",
+  "io.opentelemetry" % "opentelemetry-sdk" % "1.40.0",
+  "io.opentelemetry" % "opentelemetry-exporter-otlp" % "1.40.0"
+)

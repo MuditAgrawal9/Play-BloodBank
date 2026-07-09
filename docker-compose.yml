@@ -1,9 +1,17 @@
-version: "3.9"
-
 services:
   mysql:
     image: mysql:8.4
     container_name: bloodbank-mysql
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "mysqladmin ping -h localhost -p$${MYSQL_ROOT_PASSWORD} --silent"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -20,7 +28,8 @@ services:
     container_name: bloodbank-backend
 
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
 
     environment:
       DB_URL: ${DB_URL}
@@ -28,6 +37,17 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       PLAY_HTTP_SECRET_KEY: ${PLAY_HTTP_SECRET_KEY}
       JWT_SECRET: ${JWT_SECRET}
+
+      JAVA_OPTS: "-javaagent:/otel/opentelemetry-javaagent.jar"
+
+      OTEL_SERVICE_NAME: bloodbank-backend
+
+      OTEL_METRICS_EXPORTER: otlp
+      OTEL_TRACES_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
+      OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
 
     ports:
       - "9000:9000"
@@ -42,5 +62,46 @@ services:
     ports:
       - "3000:80"
 
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.156.0
+    container_name: otel-collector
+
+    depends_on:
+      clickhouse:
+        condition: service_healthy
+
+    command:
+      - "--config=/etc/otelcol-contrib/config.yaml"
+
+    volumes:
+      - ./otel/otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
+
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:26.6
+    container_name: clickhouse
+
+    healthcheck:
+      test: [ "CMD", "clickhouse-client", "--query", "SELECT 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+    ports:
+      - "8123:8123"   # HTTP
+      - "9001:9000"   # Native TCP
+
+    environment:
+      CLICKHOUSE_DB: otel
+      CLICKHOUSE_USER: otel
+      CLICKHOUSE_PASSWORD: otel123
+
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+
 volumes:
   mysql_data:
+  clickhouse_data:

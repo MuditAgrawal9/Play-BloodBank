@@ -34,6 +34,8 @@ WORKDIR /app
 
 COPY --from=builder /app/target/universal/stage/ .
 
+COPY otel/opentelemetry-javaagent.jar /otel/opentelemetry-javaagent.jar
+
 EXPOSE 9000
 
 CMD ["bin/bloodbank"]
