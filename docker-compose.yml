@@ -46,7 +46,7 @@ services:
       OTEL_TRACES_EXPORTER: none
       OTEL_LOGS_EXPORTER: none
 
-      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector-edge:4318
       OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
 
     ports:
@@ -62,11 +62,80 @@ services:
     ports:
       - "3000:80"
 
-  otel-collector:
+  otel-collector-edge:
     image: otel/opentelemetry-collector-contrib:0.156.0
-    container_name: otel-collector
+    container_name: otel-collector-edge
 
     depends_on:
+      kafka:
+        condition: service_started
+
+    command:
+      - "--config=/etc/otelcol-contrib/config.yaml"
+
+    volumes:
+      - ./otel/collector-edge.yaml:/etc/otelcol-contrib/config.yaml:ro
+
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+
+  kafka:
+    image: apache/kafka:4.0.0
+    container_name: kafka
+
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+
+    environment:
+      KAFKA_NODE_ID: 1
+
+      KAFKA_PROCESS_ROLES: broker,controller
+
+      KAFKA_LISTENERS: PLAINTEXT://:9092,EXTERNAL://:29092,CONTROLLER://:9093
+
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,EXTERNAL://localhost:29092
+
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop:latest
+    container_name: kafdrop
+
+    depends_on:
+      - kafka
+
+    ports:
+      - "9002:9000"
+
+    environment:
+      KAFKA_BROKERCONNECT: kafka:9092
+      SERVER_SERVLET_CONTEXTPATH: /
+
+  otel-collector-storage:
+    image: otel/opentelemetry-collector-contrib:0.156.0
+    container_name: otel-collector-storage
+
+    depends_on:
+      kafka:
+        condition: service_started
+
       clickhouse:
         condition: service_healthy
 
@@ -74,11 +143,25 @@ services:
       - "--config=/etc/otelcol-contrib/config.yaml"
 
     volumes:
-      - ./otel/otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
+      - ./otel/collector-storage.yaml:/etc/otelcol-contrib/config.yaml:ro
 
-    ports:
-      - "4317:4317"
-      - "4318:4318"
+#  otel-collector:
+#    image: otel/opentelemetry-collector-contrib:0.156.0
+#    container_name: otel-collector
+#
+#    depends_on:
+#      clickhouse:
+#        condition: service_healthy
+#
+#    command:
+#      - "--config=/etc/otelcol-contrib/config.yaml"
+#
+#    volumes:
+#      - ./otel/otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
+#
+#    ports:
+#      - "4317:4317"
+#      - "4318:4318"
 
   clickhouse:
     image: clickhouse/clickhouse-server:26.6
@@ -95,7 +178,7 @@ services:
       - "9001:9000"   # Native TCP
 
     environment:
-      CLICKHOUSE_DB: otel
+      CLICKHOUSE_DB: otel_kafka
       CLICKHOUSE_USER: otel
       CLICKHOUSE_PASSWORD: otel123
 
@@ -105,3 +188,4 @@ services:
 volumes:
   mysql_data:
   clickhouse_data:
+  kafka_data:

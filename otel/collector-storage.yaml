@@ -1,0 +1,27 @@
+receivers:
+  kafka:
+    brokers:
+      - kafka:9092
+
+    metrics:
+      topics:
+        - otel-metrics
+      encoding: otlp_proto
+
+processors:
+  batch:
+
+exporters:
+  clickhouse:
+    endpoint: tcp://clickhouse:9000?dial_timeout=10s
+    database: otel_kafka
+    username: otel
+    password: otel123
+    create_schema: true
+
+service:
+  pipelines:
+    metrics:
+      receivers: [kafka]
+      processors: [batch]
+      exporters: [clickhouse]
