@@ -24,7 +24,8 @@ services:
       - mysql_data:/var/lib/mysql
 
   backend:
-    build: .
+#    build: .
+    image: muditagrawal9/bloodbank-backend:v3
     container_name: bloodbank-backend
 
     depends_on:
@@ -51,9 +52,12 @@ services:
 
     ports:
       - "9000:9000"
+#    expose:
+#      - "9000"
 
   frontend:
     build: ./frontend
+    image: muditagrawal9/bloodbank-frontend:v3
     container_name: bloodbank-frontend
 
     depends_on:
